@@ -12,6 +12,4 @@ public interface MemberRepository extends JpaRepository<Member,Integer> {
 
     // SELECT * FROM Member WHERE username = ‘username in parameter’
     Member findByUsername(String username);
-
-
 }
