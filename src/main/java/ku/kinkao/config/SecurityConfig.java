@@ -39,6 +39,27 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/signup")).permitAll()
+
+
+                        // unauthenticated users can read restaurants and reviews.
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/restaurants")).permitAll()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/reviews/show/**")).permitAll()
+
+
+                        // members and admins can also add reviews
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/reviews/add/**"))
+                        .hasAnyRole("USER", "ADMIN")
+
+
+                        // admins can add restaurants
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/restaurants/add")).hasRole("ADMIN")
+
+
+                        // other url must be authenticated
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -54,11 +75,11 @@ public class SecurityConfig {
                         .permitAll()
                 );
 
-                http.headers(headers -> headers
-                        .xssProtection(Customizer.withDefaults())
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("form-action 'self'; script-src 'self'"))
-                );
+        http.headers(headers -> headers
+                .xssProtection(Customizer.withDefaults())
+                .contentSecurityPolicy(csp -> csp
+                        .policyDirectives("form-action 'self'; script-src 'self'"))
+        );
 
         ClientRegistrationRepository repository =
                 context.getBean(ClientRegistrationRepository.class);
@@ -87,5 +108,3 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
     }
 }
-
-

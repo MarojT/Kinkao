@@ -1,14 +1,12 @@
 package ku.kinkao.dto;
 
+import ku.kinkao.validation.ValidPassword;
+import lombok.Data;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-
-import ku.kinkao.validation.ValidPassword;
-import lombok.Data;
-
 
 @Data
 public class SignupRequest {
@@ -21,6 +19,7 @@ public class SignupRequest {
 
     @NotBlank
     @ValidPassword
+    @Size(min=12, max=128, message = "Password must have at least 12 characters")
     private String password;
 
 
@@ -28,7 +27,6 @@ public class SignupRequest {
     @Pattern(regexp = "^[a-zA-Z]+$",
             message = "First name can only contain letters")
     private String firstName;
-
 
     @NotBlank
     private String lastName;

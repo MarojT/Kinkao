@@ -27,8 +27,7 @@ public class AuthController {
                     .logout(request, response, auth);
         }
 
-        // You can redirect wherever you want, but generally it's a good
-        // practice to show the login screen again.
         return "redirect:/login?logout";
     }
 }
+
